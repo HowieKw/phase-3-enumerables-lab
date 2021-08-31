@@ -1,6 +1,16 @@
 require_relative 'spec_helper'
 require_relative '../enumerables'
 
+
+def spicy_foods
+  [
+    { name: 'Green Curry', cuisine: 'Thai', heat_level: 9 },
+    { name: 'Buffalo Wings', cuisine: 'American', heat_level: 3 },
+    { name: 'Mapo Tofu', cuisine: 'Sichuan', heat_level: 6 },
+  ]
+end
+
+
 describe '#get_names' do
 
   it 'returns an array of names' do
@@ -8,6 +18,14 @@ describe '#get_names' do
   end
 
 end
+
+
+
+def get_names(spicy_foods)
+  spicy_foods.collect { |food| food[:name] }
+end
+
+
 
 describe '#spiciest_foods' do
   
@@ -20,6 +38,12 @@ describe '#spiciest_foods' do
 
 end
 
+
+def spiciest_foods(spicy_foods)
+  spicy_foods.filter { |food| food[:heat_level] > 5}
+end
+
+
 describe '#print_spicy_foods' do
   
   it 'outputs the spicy foods to the terminal in the specified format' do
@@ -29,6 +53,15 @@ describe '#print_spicy_foods' do
   
 end
 
+
+def print_spicy_foods(spicy_foods)
+  spicy_foods.map do |food|
+    puts "#{food[:name]} (#{food[:cuisine]}) | Heat Level: #{ "🌶" * food[:heat_level]}"
+  end
+end
+
+
+
 describe '#get_spicy_food_by_cuisine' do
   
   it 'returns a single hash for the spicy food whose cuisine matches the cuisine being passed to the method' do
@@ -37,6 +70,13 @@ describe '#get_spicy_food_by_cuisine' do
   end
 
 end
+
+
+def get_spicy_food_by_cuisine(spicy_foods, cuisine)
+  spicy_foods.find { |food| cuisine == food[:cuisine]}
+end
+
+
 
 describe '#sort_by_heat' do
   
@@ -51,6 +91,21 @@ describe '#sort_by_heat' do
 
 end
 
+
+def sort_by_heat(spicy_foods)
+  spicy_foods.sort do |food1, food2|
+  if food1[:heat_level] == food2[:heat_level]
+    0
+  elsif food1[:heat_level] < food2[:heat_level]
+    -1
+  elsif food1[:heat_level] > food2[:heat_level]
+    1
+    end
+  end
+end
+
+
+
 describe '#print_spiciest_foods' do
   
   it 'outputs ONLY the spicy foods that have a heat level greater than 5 to the terminal in the specified format' do
@@ -60,10 +115,24 @@ describe '#print_spiciest_foods' do
   
 end
 
+
+def print_spiciest_foods(spicy_foods)
+  spiciest_foods(spicy_foods).map do |food| 
+  puts "#{food[:name]} (#{food[:cuisine]}) | Heat Level: #{ "🌶" * food[:heat_level]}"
+  end
+end
+
+
+
 describe '#average_heat_level' do
   
   it 'returns an integer representing the average heat level of all the spicy foods in the array' do
     expect(average_heat_level(spicy_foods)).to eq(6)
   end
   
+end
+
+
+def average_heat_level(spicy_foods)
+  spicy_foods.sum { |food| food[:heat_level] / spicy_foods.length}
 end
